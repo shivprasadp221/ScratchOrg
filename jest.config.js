@@ -20,5 +20,6 @@ module.exports = {
     },
     setupFiles: ['jest-canvas-mock'],
     setupFilesAfterEnv,
-    testTimeout: 10000
+    testTimeout: 10000,
+    coverageProvider: "v8"
 };
