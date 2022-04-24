@@ -6,7 +6,7 @@
                     label="Load Contact"
                     onclick={handleLoad}
                 ></lightning-button>
-            </p>
+            </p> 
             <template if:true={contacts}>
                 <template for:each={contacts} for:item="contact">
                     <p key={contact.Id}>{contact.Name}</p>
