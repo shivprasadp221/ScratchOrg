@@ -77,7 +77,7 @@ describe('c-apex-imperative-method', () => {
         await flushPromises();
 
         const detailEls = element.shadowRoot.querySelectorAll('p:not([class])');
-        expect(detailEls.length).toBe(APEX_CONTACTS_SUCCESS.length+1);
+        expect(detailEls.length).toBe(APEX_CONTACTS_SUCCESS.length);
         expect(detailEls[0].textContent).toBe(APEX_CONTACTS_SUCCESS[0].Name);
         expect(detailEls[1].textContent).toBe(APEX_CONTACTS_SUCCESS[1].Name);
     });
