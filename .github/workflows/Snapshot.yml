@@ -21,19 +21,22 @@ jobs:
           tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
           echo "$HOME/sfdx/bin" >> $GITHUB_PATH
           ~/sfdx/bin/sfdx version
-      # Step 2: Authenticate with Salesforce DevHub using JWT
-      - name: 'Authenticate with DevHub'
-        run: |
-          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
-                                    --jwt-key-file=~/server.key \
-                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
-                                    --set-default-dev-hub \
-                                    --alias CBDEVHUB
-      # Step 3: Checkout the source code (including snapshot-scratch-def.json)
+
+          # Step 3: Checkout the source code (including snapshot-scratch-def.json)
       - name: 'Checkout code'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Ensure full history is available, especially for the snapshot
+          
+      # Step 2: Authenticate with Salesforce DevHub using JWT
+      - name: 'Authenticate with DevHub'
+        run: |
+          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
+                                    --jwt-key-file=./assets/server.key \
+                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
+                                    --set-default-dev-hub \
+                                    --alias CBDEVHUB
+      
 
       # Step 4: Create the Scratch Org from Snapshot using dynamic alias
       - name: 'Create Scratch Org from Snapshot'
