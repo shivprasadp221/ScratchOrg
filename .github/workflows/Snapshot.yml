@@ -25,7 +25,7 @@ jobs:
       - name: 'Authenticate with DevHub'
         run: |
           sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
-                                    --jwt-key-file=../assets/server.key \
+                                    --jwt-key-file=https://github.com/cb-shivprasadpatil/lwc-test/blob/main/assets/server.key \
                                     --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
                                     --set-default-dev-hub \
                                     --alias CBDEVHUB
