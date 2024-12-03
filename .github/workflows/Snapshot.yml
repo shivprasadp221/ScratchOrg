@@ -24,9 +24,9 @@ jobs:
       # Step 2: Authenticate with Salesforce DevHub using JWT
       - name: 'Authenticate with DevHub'
         run: |
-          sfdx force:auth:jwt:grant --client-id=$SALESFORCE_DEVHUB_CONSUMER_KEY \
+          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
-                                    --username=$SALESFORCE_DEVHUB_USERNAME \
+                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
                                     --set-default-dev-hub \
                                     --alias CBDEVHUB
       # Step 3: Checkout the source code (including snapshot-scratch-def.json)
