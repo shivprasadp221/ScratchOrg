@@ -1,0 +1,53 @@
+<aura:component controller="GitHubActions">
+    <!-- Attributes to store the results of each method -->
+     <aura:attribute name="alias" type="String"/>
+    <aura:attribute name="runId" type="String"/>
+    <aura:attribute name="jobId" type="String"/>
+    <aura:attribute name="steps" type="Object[]"/>
+    <aura:attribute name="finalResult" type="String"/>
+	<aura:attribute name="interv" type="Object"/>
+     <aura:attribute name="loading" type="Boolean" default="false"/>
+    <aura:attribute name="completed" type="Boolean" default="false"/>
+    
+    <div calss="form" style="width: 50%;margin: auto;">
+        <aura:if isTrue="{!!v.loading}">
+            <!-- Button to trigger the calls to all the methods -->
+            <span style="padding-bottom: 1rem;display: block;">
+            	<lightning:input type="String" label='Alias' required='true' value="{!v.alias}" />
+            </span>
+            <span style="margin-left: 18rem;margin-top: 1rem;">
+                <lightning:button label="Create CPQ Scratch org" onclick="{!c.callAllMethods}" />
+            </span>
+        </aura:if>
+    </div>
+    
+    <aura:if isTrue="{!v.loading}">
+        <div class="catbody"> 
+            <div style="position: fixed;top: 68%;">
+                <aura:iteration items="{!v.steps}" var="item">
+                    <div class='liitem'>{!item.name}</div>
+                </aura:iteration>
+            </div>
+            <div class="cat">
+                <div class="ear ear--left"></div>
+                <div class="ear ear--right"></div>
+                <div class="face">
+                    <div class="eye eye--left">
+                        <div class="eye-pupil"></div>
+                    </div>
+                    <div class="eye eye--right">
+                        <div class="eye-pupil"></div>
+                    </div>
+                    <div class="muzzle"></div>
+                </div>
+            </div>
+        </div>
+       
+    </aura:if>
+    <aura:if isTrue="{!v.completed}">
+        <div class="alert alert-2-success">
+            <h3 class="alert-title">Success</h3>
+            <p class="alert-content">{!v.finalResult}</p>
+        </div>
+    </aura:if>
+</aura:component>

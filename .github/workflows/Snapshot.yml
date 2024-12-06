@@ -31,6 +31,7 @@ jobs:
       # Step 2: Authenticate with Salesforce DevHub using JWT
       - name: 'Authenticate with DevHub'
         run: |
+          echo "Authenticating DEVHUB"
           sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
                                     --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
@@ -38,17 +39,13 @@ jobs:
                                     --alias CBDEVHUB
       
 
-      # Step 4: Create the Scratch Org from Snapshot using dynamic alias
-      - name: 'Create Scratch Org from Snapshot'
-        run: |
-          echo "Creating Scratch Org with alias: ${{ github.event.inputs.alias }}"
-          sf org create scratch --definition-file config/snapshot-scratch-def.json \
-                                --alias ${{ github.event.inputs.alias }} \
-                                --wait 10 \
-                                --target-dev-hub sfcbdevhub1@chargebee.com.hub
-          
-      # Step 5: Output the created Scratch Org details
+     # Step 5: Output the created Scratch Org details
       - name: 'Display Scratch Org details'
         run: |
           echo "Fetching Scratch Org Info..."
-          sf org display --targetusername ${{ github.event.inputs.alias }}
+          # Capture the result of the command
+          # org_display_output=$(sf org generate password --target-org ${{ github.event.inputs.alias }})
+          echo ""@@@${{ github.event.inputs.alias }}@@@"
+          # Output the result in YAML format
+          #$(echo "$org_display_output" | sed 's/^/    /')"
+          
