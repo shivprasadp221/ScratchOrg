@@ -45,8 +45,7 @@ jobs:
           echo "Fetching Scratch Org Info..."
           # Capture the result of the command
           # org_display_output=$(sf org generate password --target-org ${{ github.event.inputs.alias }})
-          echo "@@@"
-          echo "MyTest"
+          echo ""@@@${{ github.event.inputs.alias }}@@@"
           # Output the result in YAML format
           #$(echo "$org_display_output" | sed 's/^/    /')"
-           echo "@@@"
+          
