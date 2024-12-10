@@ -39,7 +39,7 @@ jobs:
                                     --alias CBDEVHUB
         
         # Step 4: Create the Scratch Org from Snapshot using dynamic alias
-      - name: 'Create Scratch Org from Snapshot'
+      - name: 'Creating Scratch Org from Snapshot'
         run: |
           echo "Creating Scratch Org with alias: ${{ github.event.inputs.alias }}"
           sf org create scratch --definition-file config/snapshot-scratch-def.json \
