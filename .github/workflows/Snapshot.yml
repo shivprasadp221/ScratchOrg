@@ -37,7 +37,15 @@ jobs:
                                     --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
                                     --set-default-dev-hub \
                                     --alias CBDEVHUB
-      
+        
+        # Step 4: Create the Scratch Org from Snapshot using dynamic alias
+      - name: 'Create Scratch Org from Snapshot'
+        run: |
+          echo "Creating Scratch Org with alias: ${{ github.event.inputs.alias }}"
+          sf org create scratch --definition-file config/snapshot-scratch-def.json \
+                                --alias ${{ github.event.inputs.alias }} \
+                                --wait 10 \
+                                --target-dev-hub sfcbdevhub1@chargebee.com.hub
 
      # Step 5: Output the created Scratch Org details
       - name: 'Display Scratch Org details'
@@ -45,7 +53,7 @@ jobs:
           echo "Fetching Scratch Org Info..."
           # Capture the result of the command
           # org_display_output=$(sf org generate password --target-org ${{ github.event.inputs.alias }})
-          echo ""@@@${{ github.event.inputs.alias }}@@@"
+          echo ""@@@$(sf org generate password --target-org ${{ github.event.inputs.alias }})@@@"
           # Output the result in YAML format
           #$(echo "$org_display_output" | sed 's/^/    /')"
           
