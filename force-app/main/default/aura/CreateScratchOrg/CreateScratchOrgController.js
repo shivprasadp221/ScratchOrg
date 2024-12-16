@@ -9,12 +9,18 @@
                         helper.echo(component, 'getWorkflowJobs', {'runId': runId}, function(jobId) {
                             component.set("v.jobId", jobId);
                             helper.echo(component, 'getJobDetails', {'jobId': jobId}, function(steps) {
-                                component.set("v.steps", JSON.parse(steps));
+                                let arrSteps = JSON.parse(steps).filter(function (step) {
+                                    return (step.status=="completed" || step.status=="in_progress");
+                                });
+                                component.set("v.steps", arrSteps);
                                 
                                 var interv = window.setInterval(
                                     $A.getCallback(function() {
                                         helper.echo(component, 'getJobDetails', {'jobId': jobId}, function(steps) {
-                                            component.set("v.steps", JSON.parse(steps));
+                                            let arrSteps = JSON.parse(steps).filter(function (step) {
+                                                return (step.status=="completed" || step.status=="in_progress");
+                                            });
+                                            component.set("v.steps", arrSteps);
                                             helper.validateSteps(component, helper);
                                         });
                                     }), 5000

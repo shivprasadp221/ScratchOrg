@@ -46,7 +46,7 @@
     
     validateSteps : function(component, helper) {
         let steps = component.get("v.steps");
-        if(steps.length == 7 && steps[steps.length-1].status=="completed") {
+        if(steps.length >= 7 && steps[steps.length-1].status=="completed") {
             window.clearInterval(component.get("v.interv"));
             if(steps[steps.length-1].conclusion=='success') {
                 helper.echo(component, 'getJobLogs', {'jobId': component.get("v.jobId")}, function(result) {
@@ -79,7 +79,7 @@
             // Process the data if response is successful
             var parts = data.split('@@@');
             if (parts.length > 1) {
-               component.set("v.finalResult",  parts[1]); 
+               component.set("v.finalResult",  parts[3]); 
             	component.set("v.completed", true);// Return the second part of the response
             }
             

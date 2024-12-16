@@ -23,7 +23,12 @@
     
     <aura:if isTrue="{!v.loading}">
         <div class="catbody"> 
-            <div style="position: fixed;top: 68%;">
+            <div style="position: fixed;top: 65%; text-align: center;">
+                <h1>
+                    <p>Shiv's code is saving you 30+ minutes by setting up scratch orgs automatically.</p>
+                    <p style="color: crimson;font-size: large;"><strong>Don't forget to give Bonusly each time you use this page, or you may be blocked in the future.</strong></p></h1>
+            </div>
+            <div style="position: fixed;top: 73%;">
                 <aura:iteration items="{!v.steps}" var="item">
                     <div class='liitem'>{!item.name}</div>
                 </aura:iteration>
