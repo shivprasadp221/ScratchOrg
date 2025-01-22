@@ -8,7 +8,6 @@ on:
 jobs:
   push-to-scratch-org:
     runs-on: ubuntu-latest
-    needs: create-scratch-org  # Ensure scratch org is created before pushing changes
 
     steps:
       # Step 1: Install Salesforce CLI
