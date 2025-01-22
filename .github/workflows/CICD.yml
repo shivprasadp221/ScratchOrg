@@ -60,48 +60,48 @@ jobs:
                                     --set-default-dev-hub \
                                     --alias DEVHUB
                                     
-      # Step 4: Query Salesforce to get the LoginUrl
+      # Step 5: Query Salesforce to get the LoginUrl
       - name: 'Get LoginUrl for Scratch Org'
-          run: |
-            echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
-            
-            # Run the SF query and capture the result
-            QUERY_RESULT=$(sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'" --json)
-        
-            # Output the raw JSON result for debugging
-            echo "Raw query result: $QUERY_RESULT"
-        
-            # Check if result.records is empty
-            RESULT_LENGTH=$(echo "$QUERY_RESULT" | jq '.result.records | length')
-            if [ "$RESULT_LENGTH" -eq 0 ]; then
-              echo "No results found for SignupUsername '$SCRATCH_USERNAME'."
-              exit 1
-            fi
-        
-            # Extract LoginUrl from the first record in result.records
-            LOGIN_URL=$(echo "$QUERY_RESULT" | jq -r '.result.records[0].LoginUrl')
-        
-            # Check if LoginUrl is valid
-            if [ "$LOGIN_URL" == "null" ]; then
-              echo "No LoginUrl found for SignupUsername '$SCRATCH_USERNAME'."
-              exit 1
-            fi
-        
-            echo "LoginUrl for the Scratch Org is: $LOGIN_URL"
-            echo "SCRATCH_LOGIN_URL=$LOGIN_URL" >> $GITHUB_ENV
-
-          
-      # Step 5: Authenticate with Salesforce DevHub using JWT
-      - name: 'Authenticate with DevHub'
+        id: get_login_url
         run: |
-          echo "Authenticating DEVHUB"
+          echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
+          
+          # Run the SF query and capture the result
+          QUERY_RESULT=$(sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'" --json)
+      
+          # Output the raw JSON result for debugging
+          echo "Raw query result: $QUERY_RESULT"
+      
+          # Check if result.records is empty
+          RESULT_LENGTH=$(echo "$QUERY_RESULT" | jq '.result.records | length')
+          if [ "$RESULT_LENGTH" -eq 0 ]; then
+            echo "No results found for SignupUsername '$SCRATCH_USERNAME'."
+            exit 1
+          fi
+      
+          # Extract LoginUrl from the first record in result.records
+          LOGIN_URL=$(echo "$QUERY_RESULT" | jq -r '.result.records[0].LoginUrl')
+      
+          # Check if LoginUrl is valid
+          if [ "$LOGIN_URL" == "null" ]; then
+            echo "No LoginUrl found for SignupUsername '$SCRATCH_USERNAME'."
+            exit 1
+          fi
+      
+          echo "LoginUrl for the Scratch Org is: $LOGIN_URL"
+          echo "SCRATCH_LOGIN_URL=$LOGIN_URL" >> $GITHUB_ENV
+
+      # Step 6: Authenticate with Scratch Org using JWT
+      - name: 'Authenticate with Scratch Org'
+        run: |
+          echo "Authenticating with Scratch Org"
           sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
                                     --username=$SCRATCH_USERNAME \
                                     --alias $SCRATCH_ALIAS \
                                     --instance-url $SCRATCH_LOGIN_URL 
 
-      # Step 5: Push source code to Scratch Org (only changed files)
+      # Step 7: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
         run: |
           echo "Pushing source code to Scratch Org: $SCRATCH_ALIAS"
