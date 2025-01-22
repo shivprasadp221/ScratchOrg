@@ -57,7 +57,4 @@ push-to-scratch-org:
       # Step 5: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
         run: |
-          echo "Pushing source code to Scratch Org: ${{ steps.get_alias.outputs.alias }}"
-          sf project deploy start --target-org ${{ steps.get_alias.outputs.alias }} \
-                                   --wait 10 --ignore-conflicts
-
+          sf org generate password --target-org 22Jan_Test
