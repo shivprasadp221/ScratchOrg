@@ -1,0 +1,63 @@
+name: CI/CD for Salesforce Scratch Org
+
+on:
+  push:
+    branches:
+      - main   # Trigger the workflow for changes to the main branch or change as required
+
+push-to-scratch-org:
+    runs-on: ubuntu-latest
+    needs: create-scratch-org  # Ensure scratch org is created before pushing changes
+
+    steps:
+      # Step 1: Install Salesforce CLI
+      - name: 'Install Salesforce CLI'
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
+
+      # Step 2: Checkout the source code (with full history)
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Step 3: Get alias based on the branch
+      - name: 'Get Scratch Org Alias from Mapping File'
+        id: get_alias
+        run: |
+          # Get the current branch name
+          BRANCH_NAME=${GITHUB_REF##*/}
+          echo "Branch Name: $BRANCH_NAME"
+
+          # Read the alias from the scratch-org-mappings.json file
+          ALIAS=$(jq -r ".\"$BRANCH_NAME\"" scratch-org-mappings.json)
+
+          if [ "$ALIAS" == "null" ]; then
+            echo "No alias found for branch $BRANCH_NAME"
+          fi
+
+          echo "Alias for branch $BRANCH_NAME is: $ALIAS"
+          echo "::set-output name=alias::$ALIAS"
+
+      # Step 4: Authenticate with Salesforce DevHub using JWT
+      - name: 'Authenticate with DevHub'
+        run: |
+          echo "Authenticating DEVHUB"
+          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
+                                    --jwt-key-file=./assets/server.key \
+                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
+                                    --set-default-dev-hub \
+                                    --alias DEVHUB
+
+
+      # Step 5: Push source code to Scratch Org (only changed files)
+      - name: 'Push Source to Scratch Org'
+        run: |
+          echo "Pushing source code to Scratch Org: ${{ steps.get_alias.outputs.alias }}"
+          sf project deploy start --target-org ${{ steps.get_alias.outputs.alias }} \
+                                   --wait 10 --ignore-conflicts
+
