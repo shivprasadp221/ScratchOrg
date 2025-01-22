@@ -34,7 +34,9 @@ jobs:
           echo "Branch Name: $BRANCH_NAME"
 
           # Read the alias from the scratch-org-mappings.json file
-          ALIAS=$(jq -r ".\"$BRANCH_NAME\"" ./assets/scratch-org-mappings.json)
+          ALIAS=$(jq -r ".\"$BRANCH_NAME\".alias" ./assets/scratch-org-mappings.json)
+          USERNAME=$(jq -r ".\"$BRANCH_NAME\".username" ./assets/scratch-org-mappings.json)
+
 
           if [ "$ALIAS" == "null" ]; then
             echo "No alias found for branch $BRANCH_NAME"
@@ -42,15 +44,30 @@ jobs:
 
           echo "Alias for branch $BRANCH_NAME is: $ALIAS"
           echo "::set-output name=alias::$ALIAS"
+      # Step 4: Query Salesforce to get the LoginUrl
+      - name: 'Get LoginUrl for Scratch Org'
+        id: get_login_url
+        run: |
+          echo "Running data query to get LoginUrl for ${{ steps.get_alias.outputs.username }}..."
+          LOGIN_URL=$(sf data query --target-org my-dev-hub --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='${{ steps.get_alias.outputs.username }}'" --json | jq -r '.result[0].LoginUrl')
 
-      # Step 4: Authenticate with Salesforce DevHub using JWT
+          if [ "$LOGIN_URL" == "null" ]; then
+            echo "No LoginUrl found for the provided SignupUsername."
+            exit 1
+          fi
+
+          echo "LoginUrl for the Scratch Org is: $LOGIN_URL"
+          echo "::set-output name=login-url::$LOGIN_URL"
+          
+      # Step 5: Authenticate with Salesforce DevHub using JWT
       - name: 'Authenticate with DevHub'
         run: |
           echo "Authenticating DEVHUB"
           sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
-                                    --username=test-iysuzm06wxpa@example.com \
-                                    --alias ${{ steps.get_alias.outputs.alias }}
+                                    --username=${{ steps.get_alias.outputs.username }} \
+                                    --alias ${{ steps.get_alias.outputs.alias }} \
+                                    --instance-url ${{ steps.get_login_url.outputs.login-url }} 
 
       # Step 5: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
