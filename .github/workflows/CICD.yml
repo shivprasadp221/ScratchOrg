@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
           # Run the SF query and output the raw result for debugging
-          QUERY_RESULT=$(sf data query --target-org my-dev-hub --json --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'")
+          QUERY_RESULT=$(sf data query --target-org DEVHUB --json --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'")
 
             # Output the raw JSON response to help with debugging
           echo "Raw query result: $QUERY_RESULT"
