@@ -44,6 +44,17 @@ jobs:
 
           echo "Alias for branch $BRANCH_NAME is: $ALIAS"
           echo "::set-output name=alias::$ALIAS"
+       
+      # Step 4: Authenticate with Salesforce DevHub using JWT
+      - name: 'Authenticate with DevHub'
+        run: |
+          echo "Authenticating DEVHUB"
+          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
+                                    --jwt-key-file=./assets/server.key \
+                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
+                                    --set-default-dev-hub \
+                                    --alias DEVHUB
+                                    
       # Step 4: Query Salesforce to get the LoginUrl
       - name: 'Get LoginUrl for Scratch Org'
         id: get_login_url
