@@ -62,7 +62,6 @@ jobs:
                                     
       # Step 4: Query Salesforce to get the LoginUrl
       - name: 'Get LoginUrl for Scratch Org'
-          id: get_login_url
           run: |
             echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
             
