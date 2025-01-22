@@ -49,9 +49,8 @@ jobs:
           echo "Authenticating DEVHUB"
           sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
-                                    --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
-                                    --set-default-dev-hub \
-                                    --alias DEVHUB
+                                    --username=test-iysuzm06wxpa@example.com \
+                                    --alias ${{ steps.get_alias.outputs.alias }}
 
       # Step 5: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
