@@ -42,8 +42,13 @@ jobs:
             echo "No alias found for branch $BRANCH_NAME"
           fi
 
-          echo "Alias for branch $BRANCH_NAME is: $ALIAS"
+          echo "SCRATCH_ALIAS=$ALIAS" >> $GITHUB_ENV
+          echo "SCRATCH_USERNAME=$USERNAME" >> $GITHUB_ENV
           echo "::set-output name=alias::$ALIAS"
+          
+           # Set outputs for alias and username using environment variables instead of output
+          echo "SCRATCH_ALIAS=$ALIAS" >> $GITHUB_ENV
+          echo "SCRATCH_USERNAME=$USERNAME" >> $GITHUB_ENV
        
       # Step 4: Authenticate with Salesforce DevHub using JWT
       - name: 'Authenticate with DevHub'
@@ -59,9 +64,9 @@ jobs:
       - name: 'Get LoginUrl for Scratch Org'
         id: get_login_url
         run: |
-          echo "Running data query to get LoginUrl for ${{ steps.get_alias.outputs.username }}..."
-          sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='${{ steps.get_alias.outputs.username }}'"
-          LOGIN_URL=$(sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='${{ steps.get_alias.outputs.username }}'" --json | jq -r '.result[0].LoginUrl')
+          echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
+          sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'"
+          LOGIN_URL=$(sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'" --json | jq -r '.result[0].LoginUrl')
 
           if [ "$LOGIN_URL" == "null" ]; then
             echo "No LoginUrl found for the provided SignupUsername."
