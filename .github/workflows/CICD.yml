@@ -34,7 +34,7 @@ jobs:
           echo "Branch Name: $BRANCH_NAME"
 
           # Read the alias from the scratch-org-mappings.json file
-          ALIAS=$(jq -r ".\assets\"$BRANCH_NAME\"" scratch-org-mappings.json)
+          ALIAS=$(jq -r ".\"$BRANCH_NAME\"" ./assets/scratch-org-mappings.json)
 
           if [ "$ALIAS" == "null" ]; then
             echo "No alias found for branch $BRANCH_NAME"
