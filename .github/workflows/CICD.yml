@@ -65,7 +65,11 @@ jobs:
         id: get_login_url
         run: |
           echo "Running data query to get LoginUrl for $SCRATCH_USERNAME..."
-          sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'"
+          # Run the SF query and output the raw result for debugging
+          QUERY_RESULT=$(sf data query --target-org my-dev-hub --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'" --json)
+
+            # Output the raw JSON response to help with debugging
+          echo "Raw query result: $QUERY_RESULT"
           LOGIN_URL=$(sf data query --target-org DEVHUB --query "SELECT SignupUsername, LoginUrl FROM ScratchOrgInfo WHERE SignupUsername='$SCRATCH_USERNAME'" --json | jq -r '.result[0].LoginUrl')
 
           if [ "$LOGIN_URL" == "null" ]; then
