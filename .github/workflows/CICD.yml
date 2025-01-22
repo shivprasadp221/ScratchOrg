@@ -57,4 +57,4 @@ push-to-scratch-org:
       # Step 5: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
         run: |
-          sf org generate password --target-org 22Jan_Test
+          sf org generate password --target-org ${{ steps.get_alias.outputs.alias }}
