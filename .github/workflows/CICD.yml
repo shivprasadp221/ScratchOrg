@@ -54,7 +54,7 @@ jobs:
       - name: 'Authenticate with DevHub'
         run: |
           echo "Authenticating DEVHUB"
-          sfdx force:auth:jwt:grant --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
+          sf org login jwt --client-id=${{ secrets.SALESFORCE_DEVHUB_CONSUMER_KEY }} \
                                     --jwt-key-file=./assets/server.key \
                                     --username=${{ secrets.SALESFORCE_DEVHUB_USERNAME }} \
                                     --set-default-dev-hub \
