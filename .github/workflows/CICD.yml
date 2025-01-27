@@ -99,7 +99,7 @@ jobs:
                                     --jwt-key-file=./assets/server.key \
                                     --username=$SCRATCH_USERNAME \
                                     --alias $SCRATCH_ALIAS \
-                                    --instance-url https://test.salesforce.com
+                                    --instance-url $SCRATCH_LOGIN_URL
 
       # Step 7: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
