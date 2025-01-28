@@ -153,23 +153,15 @@ jobs:
           echo "DYNAMIC_ALIAS=$DYNAMIC_ALIAS" >> $GITHUB_ENV
           echo "::set-output name=dynamic_alias::$DYNAMIC_ALIAS"
           
-          echo "Creating Scratch Org with alias: $DYNAMIC_ALIAS"
-          sf org create scratch --definition-file config/snapshot-scratch-def.json \
-                                --alias $DYNAMIC_ALIAS \
-                                --wait 10 \
-                                --target-dev-hub ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
           # Generate the password for the new scratch org
-          PASSWORD=$(sf org generate password --length 12 --target-org $DYNAMIC_ALIAS)
+          PASSWORD='myTest'
 
-           APEX_CODE=$(cat <<EOF
-            String orgDetails = '$PASSWORD';
-            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});
-            mail.setSubject('New scratch org has been created.');
-            mail.setPlainTextBody(orgDetails+'.');
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
-            EOF
-            )
+          # Use a here-document to define the APEX_CODE
+          APEX_CODE=$(cat <<'EOF'
+String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+EOF
+)
+
   
             # Save the Apex code to a file
             echo "$APEX_CODE" > dynamic.apex
