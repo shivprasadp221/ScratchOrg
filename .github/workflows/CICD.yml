@@ -159,7 +159,7 @@ jobs:
                                 --wait 10 \
                                 --target-dev-hub ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
           # Generate the password for the new scratch org
-          PASSWORD=$(sf org generate password --length 12 --target-org ${{ DYNAMIC_ALIAS }})
+          PASSWORD=$(sf org generate password --length 12 --target-org $DYNAMIC_ALIAS)
 
            APEX_CODE=$(cat <<EOF
             String orgDetails = '$PASSWORD';
