@@ -158,8 +158,14 @@ jobs:
 
           # Use a here-document to define the APEX_CODE
           APEX_CODE=$(cat <<'EOF'
-String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+String orgDetails = '$PASSWORD';
+Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});
+mail.setSubject('New scratch org has been created.');
+mail.setPlainTextBody(orgDetails+'.');
+Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
 EOF
+)
 )
 
   
