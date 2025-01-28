@@ -67,7 +67,7 @@ jobs:
           echo "Checking org status for $SCRATCH_USERNAME"
           
           # Get the org status info in JSON format
-          ORG_INFO_JSON=$(sf org display --target-org $SCRATCH_USERNAME --json)
+          ORG_INFO_JSON=$(sf org display --target-org "$SCRATCH_USERNAME" --json)
 
           # Check the status of the org inside the 'result' object
           STATUS=$(echo "$ORG_INFO_JSON" | jq -r '.result.status')
