@@ -166,7 +166,6 @@ mail.setPlainTextBody(orgDetails+'.');
 Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
 EOF
 )
-)
 
   
             # Save the Apex code to a file
