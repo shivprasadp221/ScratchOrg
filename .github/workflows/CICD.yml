@@ -124,7 +124,41 @@ jobs:
             echo "Org status is Active. Proceeding with regular flow."
             echo "SUCCESS=false" >> $GITHUB_ENV
           fi
+     
+     # Step 6: Create Scratch Org from Snapshot if Status is Inactive
+      - name: 'Create Scratch Org from Snapshot'
+        run: |
+          # Dynamically create alias using branch name and today's date
+          TODAY_DATE=$(date +'%Y-%m-%d')
+          DYNAMIC_ALIAS="${BRANCH_NAME}-${TODAY_DATE}"
+          echo "DYNAMIC_ALIAS=$DYNAMIC_ALIAS" >> $GITHUB_ENV
+          echo "::set-output name=dynamic_alias::$DYNAMIC_ALIAS"
+          
+          echo "Creating Scratch Org with alias: ${{ env.DYNAMIC_ALIAS }}"
+          sf org create scratch --definition-file config/snapshot-scratch-def.json \
+                                --alias ${{ env.DYNAMIC_ALIAS }} \
+                                --wait 10 \
+                                --target-dev-hub ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
+          # Generate the password for the new scratch org
+          PASSWORD=$(sf org generate password --length 12 --target-org ${{ env.DYNAMIC_ALIAS }})
 
+           APEX_CODE=$(cat <<EOF
+            String orgDetails = '$PASSWORD';
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});
+            mail.setSubject('New scratch org has been created.');
+            mail.setPlainTextBody(orgDetails+'.');
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+            EOF
+            )
+  
+            # Save the Apex code to a file
+            echo "$APEX_CODE" > dynamic.apex
+        
+            sf apex run --target-org ${{ secrets.SALESFORCE_DEVHUB_USERNAME }} --file dynamic.apex
+            rm dynamic.apex
+
+                                
       # Step 7: Push source code to Scratch Org (only changed files)
       - name: 'Push Source to Scratch Org'
         run: |
