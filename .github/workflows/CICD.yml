@@ -110,14 +110,7 @@ jobs:
           PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME)
 
           # Use a here-document to define the APEX_CODE
-          APEX_CODE=$(cat <<EOF 
-          String orgDetails = '$PASSWORD';
-          Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-          mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});
-          mail.setSubject('New scratch org has been created.');
-          mail.setPlainTextBody(orgDetails+'.');
-          Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
-          EOF)
+          APEX_CODE=$(cat <<EOF String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});EOF)
 
             echo "After Apex Code"
             # Save the Apex code to a file
