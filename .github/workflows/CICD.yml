@@ -16,9 +16,9 @@ jobs:
       - name: 'Install Salesforce CLI'
         run: |
           # Update the JSON file using jq
-            BRANCH_NAME = 'main'
-            DYNAMIC_ALIAS = 'DYNAMIC_ALIAS'
-            NEW_USERNAME = 'test@test.com'
+            BRANCH_NAME='main'
+            DYNAMIC_ALIAS='DYNAMIC_ALIAS'
+            NEW_USERNAME='test@test.com'
             jq --arg branch "$BRANCH_NAME" --arg alias "$DYNAMIC_ALIAS" --arg username "$NEW_USERNAME" \
             '.[$branch].alias = $alias | .[$branch].username = $username' \
              ./assets/scratch-org-mappings.json > tmp.json && mv tmp.json ./assets/scratch-org-mappings.json
