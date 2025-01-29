@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Install Salesforce CLI
+      # Step 1: Install Salesforce CLI 
       - name: 'Install Salesforce CLI'
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
