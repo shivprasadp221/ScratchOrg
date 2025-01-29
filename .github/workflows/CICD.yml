@@ -118,13 +118,13 @@ jobs:
             echo "After apex run"
             rm dynamic.apex
             # Get the org status info in JSON format
-            NEW_ORG_INFO_JSON=$(sf org display --target-org "$DYNAMIC_ALIAS" --json)
+            NEW_ORG_INFO_JSON=$(sf org display --target-org "$SCRATCH_USERNAME" --json)
              echo "After apex NEW_ORG_INFO_JSON"
             echo "$NEW_ORG_INFO_JSON" > ./assets/scratch-org-mappings.json
              echo "After apex NEW_ORG_INFO_JSON2"
             # Commit the updated scratch-org-mappings.json file
             git add ./assets/scratch-org-mappings.json
-            git commit -m "Update Scratch Org Info for $DYNAMIC_ALIAS"
+            git commit -m "Update Scratch Org Info for $SCRATCH_USERNAME"
             git push
                                 
 
