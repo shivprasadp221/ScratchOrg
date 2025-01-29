@@ -1,11 +1,25 @@
 {
   "status": 0,
   "result": {
+    "id": "00DHy000000dhLVMAY",
+    "devHubId": "sfcbdevhub1@chargebee.com.hub",
+    "apiVersion": "62.0",
+    "accessToken": "00DHy000000dhLV!ASAAQKu5NagTuS4jcOLMDDqS0BiNWnq_RBVvFqB8skdk7tfKKoJ94ieaKrikyympglxfnhifWhgotsmDJOMzhjzEgahJRA34",
+    "instanceUrl": "https://saas-business-4692-dev-ed.scratch.my.salesforce.com",
     "username": "test-tlhubgkeg8nz@example.com",
+    "clientId": "3MVG92mNMNiWvonhLqRZfLnEQj8NcjDXFSmNeMoVOFLXSvJt_MYPg_4wc4WFNxAl0y4RvUx17LguXkh6XRTvw",
+    "password": "amZn0hq&lhwa",
+    "status": "Active",
+    "expirationDate": "2025-02-26",
+    "createdBy": "sfcbdevhub1@chargebee.com.hub",
+    "edition": "Developer",
+    "namespace": "chargebeeapps",
+    "orgName": "CB-CRM",
+    "createdDate": "2025-01-27T07:59:36.000+0000",
+    "signupUsername": "test-tlhubgkeg8nz@example.com",
     "alias": "25thNov_CRM"
   },
   "warnings": [
-    "org-api-version configuration overridden at 55.0",
     "This command will expose sensitive information that allows for subsequent activity using your current authenticated session.\nSharing this information is equivalent to logging someone in under the current credential, resulting in unintended access and escalation of privilege.\nFor additional information, please review the authorization section of the https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_web_flow.htm."
   ]
 }
