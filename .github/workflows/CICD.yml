@@ -122,6 +122,8 @@ jobs:
              echo "After apex NEW_ORG_INFO_JSON"
             echo "$NEW_ORG_INFO_JSON" > ./assets/scratch-org-mappings.json
              echo "After apex NEW_ORG_INFO_JSON2"
+             git config --global user.name "cb-shivprasadpatil"
+            git config --global user.email "shivprasad.patil@chargebee.com"
             # Commit the updated scratch-org-mappings.json file
             git add ./assets/scratch-org-mappings.json
             git commit -m "Update Scratch Org Info for $SCRATCH_USERNAME"
