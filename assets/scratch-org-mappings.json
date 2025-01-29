@@ -1,3 +1,11 @@
 {
-  "main": {"alias": "25thNov_CRM", "username": "test-tlhubgkeg8nz@example.com"}
+  "status": 0,
+  "result": {
+    "username": "test-tlhubgkeg8nz@example.com",
+    "alias": "25thNov_CRM"
+  },
+  "warnings": [
+    "org-api-version configuration overridden at 55.0",
+    "This command will expose sensitive information that allows for subsequent activity using your current authenticated session.\nSharing this information is equivalent to logging someone in under the current credential, resulting in unintended access and escalation of privilege.\nFor additional information, please review the authorization section of the https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_web_flow.htm."
+  ]
 }
