@@ -107,8 +107,7 @@ jobs:
       - name: 'Create Scratch Org from Snapshot'
         run: |
           # Generate the password for the new scratch org
-          PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME)
-          
+          PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME | sed "s/'/''/g" | tr -d '\n')          
           APEX_CODE="String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});"
 
             echo "After Apex Code"
