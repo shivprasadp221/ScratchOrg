@@ -109,16 +109,8 @@ jobs:
           # Generate the password for the new scratch org
           PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME)
           
-          # Use a here-document to define the APEX_CODE with proper variable expansion
-          APEX_CODE=$(cat <<EOF
-          String orgDetails = '$PASSWORD';
-          Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-          mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});
-          mail.setSubject('New scratch org has been created.');
-          mail.setPlainTextBody(orgDetails+'.');
-          Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
-          EOF
-          )
+          APEX_CODE="String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});"
+
             echo "After Apex Code"
             # Save the Apex code to a file
             echo "$APEX_CODE" > dynamic.apex
