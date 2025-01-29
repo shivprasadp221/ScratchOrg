@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main   # Trigger the workflow for changes to the main branch or change as required
+    paths-ignore:
+      - ./assets/scratch-org-mappings.json  
 
 jobs:
   push-to-scratch-org:
