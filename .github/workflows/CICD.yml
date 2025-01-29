@@ -21,7 +21,7 @@ jobs:
             NEW_USERNAME='test@test.com'
             jq --arg branch "$BRANCH_NAME" --arg alias "$DYNAMIC_ALIAS" --arg username "$NEW_USERNAME" \
             '.[$branch].alias = $alias | .[$branch].username = $username' \
-             ./assets/scratch-org-mappings.json > tmp.json && mv tmp.json /assets/scratch-org-mappings.json
+             ./assets/scratch-org-mappings.json > tmp.json && mv tmp.json ./assets/scratch-org-mappings.json
 
             # Display the updated JSON for debugging
-            cat /assets/scratch-org-mappings.json
+            cat ./assets/scratch-org-mappings.json
