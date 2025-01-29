@@ -130,7 +130,6 @@ jobs:
      # Step 3: Get the checkout branch name
       - name: 'Get Checkout Branch Name'
         id: get_branch_name
-        if: env.ORGSTATUS == 'false'
         run: |
           # Extract the branch name from GITHUB_REF
           if [[ "$GITHUB_REF" == refs/heads/* ]]; then
@@ -149,7 +148,6 @@ jobs:
           
      # Step 6: Create Scratch Org from Snapshot if Status is Inactive
       - name: 'Create Scratch Org from Snapshot'
-        if: env.ORGSTATUS == 'false'
         run: |
           # Dynamically create alias using branch name and today's date
           TODAY_DATE=$(date +'%Y-%m-%d')
