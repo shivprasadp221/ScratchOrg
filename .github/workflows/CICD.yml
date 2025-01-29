@@ -109,7 +109,7 @@ jobs:
           # Generate the password for the new scratch org
           PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME)
           
-          APEX_CODE="String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});"
+          APEX_CODE="String orgDetails = '$PASSWORD';\nMessaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();\nmail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});\nmail.setSubject('New scratch org has been created.');\nmail.setPlainTextBody(orgDetails+'.');\nMessaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});"
 
             echo "After Apex Code"
             # Save the Apex code to a file
