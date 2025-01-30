@@ -130,6 +130,7 @@ jobs:
      # Step 3: Get the checkout branch name
       - name: 'Get Checkout Branch Name'
         id: get_branch_name
+        if: env.ORGSTATUS == 'false'
         run: |
           # Extract the branch name from GITHUB_REF
           if [[ "$GITHUB_REF" == refs/heads/* ]]; then
@@ -148,6 +149,7 @@ jobs:
           
      # Step 6: Create Scratch Org from Snapshot if Status is Inactive
       - name: 'Create Scratch Org from Snapshot'
+        if: env.ORGSTATUS == 'false'
         run: |
           # Dynamically create alias using branch name and today's date
           TODAY_DATE=$(date +'%Y-%m-%d')
@@ -159,7 +161,7 @@ jobs:
           sf org create scratch --definition-file config/snapshot-scratch-def.json --alias $DYNAMIC_ALIAS --wait 10 --target-dev-hub ${{ secrets.SALESFORCE_DEVHUB_USERNAME }}
                                 
           # Generate the password for the new scratch org
-          PASSWORD=$(sf org generate password --length 12 --target-org $SCRATCH_USERNAME | sed "s/'/''/g" | tr -d '\n')          
+          PASSWORD=$(sf org generate password --length 12 --target-org $DYNAMIC_ALIAS | sed "s/'/''/g" | tr -d '\n')          
           APEX_CODE="String orgDetails = '$PASSWORD';Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();mail.setToAddresses(new String[] {'shivprasad.patil@chargebee.com'});mail.setSubject('New scratch org has been created.');mail.setPlainTextBody(orgDetails+'.');Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});"
 
             # Save the Apex code to a file
@@ -171,8 +173,8 @@ jobs:
             NEW_ORG_INFO_JSON=$(sf org display --target-org "$DYNAMIC_ALIAS" --json)
           
             echo "$NEW_ORG_INFO_JSON" > ./assets/scratch-org-mappings.json
-            git config --global user.name "cb-shivprasadpatil"
-            git config --global user.email "shivprasad.patil@chargebee.com"
+            git config --global user.name "shivprasadp221"
+            git config --global user.email "shivprasadp221@gmail.com.com"
             # Commit the updated scratch-org-mappings.json file
             git add ./assets/scratch-org-mappings.json
             git commit -m "Update Scratch Org Info for $DYNAMIC_ALIAS"
